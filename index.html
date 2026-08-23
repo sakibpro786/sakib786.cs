@@ -182,18 +182,36 @@
 
     <!-- Pop-up Modal -->
     <div id="infoModal" class="modal">
-    <div class="modal-content">
-        <h3 id="modalTitle" style="color: #00f2fe; margin-bottom: 15px; font-size: 1.3rem;"></h3>
-        <p id="modalDesc" style="color: #f3f4f6; font-size: 1rem; line-height: 1.6; text-align: left; white-space: pre-line; margin-bottom: 20px;"></p>
-        <a id="modalLink" href="#" target="_blank" class="btn" style="display:none; margin-bottom:10px; background:#ff0050; color:#fff;">Follow TikTok ID</a>
-        <button class="btn" onclick="closeModal()" style="background:#374151; color:#fff;">Close</button>
-    </div>
+        <div class="modal-content">
+            <h3 id="modalTitle" style="color: #00f2fe; margin-bottom: 15px; font-size: 1.3rem;"></h3>
+            <p id="modalDesc" style="color: #f3f4f6; font-size: 1rem; line-height: 1.6; text-align: left; white-space: pre-line; margin-bottom: 20px;"></p>
+            <a id="modalLink" href="#" target="_blank" class="btn" style="display:none; margin-bottom:10px; background:#ff0050; color:#fff;">Follow TikTok ID</a>
+            <button class="btn" onclick="closeModal()" style="background:#374151; color:#fff;">Close</button>
+        </div>
     </div>
 
     <script>
         let generatedCaptcha = "";
 
-        function generateCaptcha() {
+        function openModal(title, desc, url = null) {
+            document.getElementById('modalTitle').innerText = title;
+            document.getElementById('modalDesc').innerText = desc;
+            const linkBtn = document.getElementById('modalLink');
+            if (url) {
+                linkBtn.href = url;
+                linkBtn.style.display = 'block';
+            } else {
+                linkBtn.style.display = 'none';
+            }
+            document.getElementById('infoModal').style.display = 'flex';
+        }
+              }
+        document.getElementById('infoModal').style.display = 'flex';
+    }
+
+    let generatedCaptcha = "";
+
+       function generateCaptcha() {
             const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
             generatedCaptcha = "";
             for (let i = 0; i < 4; i++) {
