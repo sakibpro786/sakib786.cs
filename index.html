@@ -161,21 +161,28 @@
     <!-- Main Content (4 Popup Cards Layout) -->
     <div class="container" id="mainSite">
         <div class="grid">
+            <!-- 1. Cybersecurity -->
             <div class="card" onclick="openModal('1. Cybersecurity Gate', 'Deep analysis of Linux shell, termux security configurations, network analysis tools, and automated bash protections.')">
                 <h3>1. 🔒 Cybersecurity</h3>
                 <p>Tap for detailed security overview and shell manipulation tools.</p>
             </div>
+
+            <!-- 2. Termux & Linux Dev -->
             <div class="card" onclick="openModal('Termux & Linux Dev (Basic to Pro)', '১. Termux বেসিক সেটআপ ও কাস্টম ব্যানার তৈরি।\n\n২. স্টাইলিশ ফন্ট ও হ্যাকিং থিম সেটআপ করার নিয়ম।\n\n৩. নিজের নাম ও লোগো দিয়ে কাস্টম টুলস তৈরি।\n\n৪. প্রো লেভেল ব্যাশ স্ক্রিপ্টিং ও অ্যাপ মেকিং।\n\n৫. Proot-Linux (Ubuntu/Kali) ইনস্টলেশন গাইড।')">
-    <h3>২. 💻 Termux & Linux Dev</h3>
-    <p>টার্মাক্স বেসিক থেকে প্রো লেভেল স্টাইলিশ সেটআপ ও অ্যাপ তৈরির গাইড।</p>
+                <h3>২. 💻 Termux & Linux Dev</h3>
+                <p>টার্মাক্স বেসিক থেকে প্রো লেভেল স্টাইলিশ সেটআপ ও অ্যাপ তৈরির গাইড।</p>
             </div>
+
+            <!-- 3. TikTok Follow -->
             <div class="card" onclick="openModal('৩. 🚀 ফলো টিকটক আইডি', 'আমার অফিশিয়াল TikTok আইডি ফলো করে পাশে থাকুন এবং নতুন টেক ও টার্মাক্স আপডেট পান! নিচে বাটনে ক্লিক করে সরাসরি আইডিতে চলে যান।', 'https://www.tiktok.com/@2f_gaming')">
-    <h3>৩. 🚀 ফলো টিকটক আইডি</h3>
-    <p>টিকটকে ফলো করতে ও আপডেট পেতে এখানে ট্যাপ করুন।</p>
+                <h3>৩. 🚀 ফলো টিকটক আইডি</h3>
+                <p>টিকটকে ফলো করতে ও আপডেট পেতে এখানে ট্যাপ করুন।</p>
             </div>
+
+            <!-- 4. Android Tools Services -->
             <div class="card" onclick="openModal('এনড্রয়েড ফোনের জন্য প্রয়োজনীয় টুলস', '১. ফোনের যেকোনো সমস্যা\n২. স্ক্রীন লক ভুলে গেলে খুলে দেওয়া\n৩. ফোন Restart করার পর না খুললে খুলে দেওয়া\n৪. যে কোনো আইডি খুলে দেওয়া\n৫. Tik Tok অথবা Facebook আইডি প্রমোট করা')">
-    <h3>৪. 📱 এনড্রয়েড ফোনের জন্য প্রয়োজনীয় টুলস</h3>
-    <p>ট্যাপ করে সার্ভিস ও টুলসের বিস্তারিত দেখুন।</p>
+                <h3>৪. 📱 এনড্রয়েড ফোনের জন্য প্রয়োজনীয় টুলস</h3>
+                <p>ট্যাপ করে সার্ভিস ও টুলসের বিস্তারিত দেখুন।</p>
             </div>
         </div>
     </div>
@@ -193,25 +200,7 @@
     <script>
         let generatedCaptcha = "";
 
-        function openModal(title, desc, url = null) {
-            document.getElementById('modalTitle').innerText = title;
-            document.getElementById('modalDesc').innerText = desc;
-            const linkBtn = document.getElementById('modalLink');
-            if (url) {
-                linkBtn.href = url;
-                linkBtn.style.display = 'block';
-            } else {
-                linkBtn.style.display = 'none';
-            }
-            document.getElementById('infoModal').style.display = 'flex';
-        }
-              }
-        document.getElementById('infoModal').style.display = 'flex';
-    }
-
-    let generatedCaptcha = "";
-function generateCaptcha() {
-       function generateCaptcha() {
+        function generateCaptcha() {
             const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
             generatedCaptcha = "";
             for (let i = 0; i < 4; i++) {
@@ -236,9 +225,16 @@ function generateCaptcha() {
             document.getElementById("sidebar").classList.toggle("active");
         }
 
-        function openModal(title, desc) {
+        function openModal(title, desc, url = null) {
             document.getElementById('modalTitle').innerText = title;
             document.getElementById('modalDesc').innerText = desc;
+            const linkBtn = document.getElementById('modalLink');
+            if (url) {
+                linkBtn.href = url;
+                linkBtn.style.display = 'block';
+            } else {
+                linkBtn.style.display = 'none';
+            }
             document.getElementById('infoModal').style.display = 'flex';
         }
 
