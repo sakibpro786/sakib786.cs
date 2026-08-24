@@ -10,21 +10,22 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
         
         body { 
-            background: #030712 url('https://i.ibb.co/LzYrX2k/1000015934.png') no-repeat center center fixed; 
-            background-size: cover;
+            background: #030712; 
             color: #f3f4f6; 
             min-height: 100vh;
             overflow-x: hidden;
             position: relative;
         }
 
-        /* Dark overlay for better text readability */
-        body::before {
-            content: '';
+        /* Animated Cyber Network Canvas Background */
+        #networkCanvas {
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(3, 7, 18, 0.75);
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             z-index: -1;
+            background: radial-gradient(circle at center, #071126 0%, #030712 100%);
         }
 
         /* Anti-Bot Verification Overlay */
@@ -135,6 +136,9 @@
 </head>
 <body>
 
+    <!-- Cyber Network Animation Canvas -->
+    <canvas id="networkCanvas"></canvas>
+
     <!-- Security Check Gate -->
     <div id="botGate">
         <div class="security-card">
@@ -236,6 +240,106 @@
     </div>
 
     <script>
+        // --- Network Nodes Canvas Logic ---
+        const canvas = document.getElementById('networkCanvas');
+        const ctx = canvas.getContext('2d');
+        let nodes = [];
+        let pulses = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            initNodes();
+        }
+
+        function initNodes() {
+            nodes = [];
+            const count = Math.floor((canvas.width * canvas.height) / 18000);
+            for (let i = 0; i < count; i++) {
+                nodes.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    vx: (Math.random() - 0.5) * 0.8,
+                    vy: (Math.random() - 0.5) * 0.8,
+                    radius: Math.random() * 2 + 1.5
+                });
+            }
+        }
+
+        function drawNetwork() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw Node Points
+            nodes.forEach(node => {
+                node.x += node.vx;
+                node.y += node.vy;
+
+                if (node.x < 0 || node.x > canvas.width) node.vx *= -1;
+                if (node.y < 0 || node.y > canvas.height) node.vy *= -1;
+
+                ctx.beginPath();
+                ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
+                ctx.fillStyle = '#00f2fe';
+                ctx.shadowBlur = 8;
+                ctx.shadowColor = '#00f2fe';
+                ctx.fill();
+            });
+
+            // Draw Tower/Node Connections & Pulses
+            for (let i = 0; i < nodes.length; i++) {
+                for (let j = i + 1; j < nodes.length; j++) {
+                    const dx = nodes[i].x - nodes[j].x;
+                    const dy = nodes[i].y - nodes[j].y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (dist < 130) {
+                        ctx.beginPath();
+                        ctx.moveTo(nodes[i].x, nodes[i].y);
+                        ctx.lineTo(nodes[j].x, nodes[j].y);
+                        ctx.strokeStyle = `rgba(0, 242, 254, ${1 - dist / 130 * 0.85})`;
+                        ctx.lineWidth = 0.6;
+                        ctx.stroke();
+
+                        // Random signal light transfer effect
+                        if (Math.random() < 0.0012) {
+                            pulses.push({
+                                x1: nodes[i].x, y1: nodes[i].y,
+                                x2: nodes[j].x, y2: nodes[j].y,
+                                progress: 0
+                            });
+                        }
+                    }
+                }
+            }
+
+            // Animate Traveling Light Pulses
+            for (let p = pulses.length - 1; p >= 0; p--) {
+                let pulse = pulses[p];
+                pulse.progress += 0.04;
+                if (pulse.progress >= 1) {
+                    pulses.splice(p, 1);
+                    continue;
+                }
+
+                const px = pulse.x1 + (pulse.x2 - pulse.x1) * pulse.progress;
+                const py = pulse.y1 + (pulse.y2 - pulse.y1) * pulse.progress;
+
+                ctx.beginPath();
+                ctx.arc(px, py, 3, 0, Math.PI * 2);
+                ctx.fillStyle = '#ffffff';
+                ctx.shadowBlur = 12;
+                ctx.shadowColor = '#00f2fe';
+                ctx.fill();
+            }
+
+            requestAnimationFrame(drawNetwork);
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+        drawNetwork();
+
+        // --- Site Core Logic ---
         let generatedCaptcha = "";
 
         function generateCaptcha() {
@@ -305,4 +409,5 @@
         }
     </script>
 </body>
-</html>
+    </html>
+    
