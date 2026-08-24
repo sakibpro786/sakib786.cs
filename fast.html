@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TIK S App</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body, html {
+            width: 100%;
+            height: 100%;
+            background-color: #0e0d08;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #fff;
+            overflow: hidden;
+        }
+
+        /* ১. ৩ডি স্প্ল্যাশ স্ক্রিন ও অ্যানিমেশন */
+        #splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #0e0d08;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.6s ease;
+        }
+        
+        .logo-3d-main {
+            width: 130px;
+            height: 130px;
+            background: linear-gradient(145deg, #00f2fe, #4facfe);
+            border-radius: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 15px 35px rgba(79, 172, 254, 0.5),
+                        inset 0 4px 10px rgba(255, 255, 255, 0.4);
+            animation: pulse3d 2s ease-in-out infinite alternate;
+        }
+
+        .logo-3d-main h1 {
+            font-size: 42px;
+            font-weight: 900;
+            color: #fff;
+            text-shadow: 2px 4px 10px rgba(0,0,0,0.4);
+            letter-spacing: 2px;
+        }
+
+        .loader-ring {
+            margin-top: 30px;
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255,255,255,0.1);
+            border-top: 4px solid #4facfe;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        /* ২. মূল অ্যাপ ডিজাইন */
+        #main-content {
+            display: none;
+            width: 100%;
+            height: 100%;
+            padding: 20px;
+            overflow-y: auto;
+            text-align: center;
+        }
+
+        .header-title {
+            font-size: 26px;
+            margin-top: 20px;
+            margin-bottom: 25px;
+            background: linear-gradient(45deg, #ff4b2b, #ff416c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: bold;
+        }
+
+        /* ৩ডি সোশ্যাল মিডিয়া বাটন (FB & TikTok) */
+        .social-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .btn-3d {
+            width: 70px;
+            height: 70px;
+            border-radius: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            font-size: 30px;
+            color: #fff;
+            transition: transform 0.2s;
+        }
+
+        .btn-fb {
+            background: linear-gradient(145deg, #1877f2, #0b5ed7);
+            box-shadow: 0 8px 20px rgba(24, 119, 242, 0.4), inset 0 2px 5px rgba(255,255,255,0.4);
+        }
+
+        .btn-tiktok {
+            background: linear-gradient(145deg, #25f4ee, #fe2c55);
+            box-shadow: 0 8px 20px rgba(254, 44, 85, 0.4), inset 0 2px 5px rgba(255,255,255,0.4);
+        }
+
+        .btn-3d:active {
+            transform: scale(0.92);
+        }
+
+        /* ভিডিও ডাউনলোডার বক্স */
+        .downloader-box {
+            background: #1a1914;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            margin-bottom: 20px;
+        }
+
+        .downloader-box input {
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            border: 1px solid #333;
+            background: #0e0d08;
+            color: #fff;
+            font-size: 15px;
+            margin-bottom: 15px;
+            outline: none;
+        }
+
+        .download-btn {
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            border: none;
+            background: linear-gradient(145deg, #00c6ff, #0072ff);
+            color: #fff;
+            font-size: 16px;
+            font-weight: bold;
+            box-shadow: 0 6px 18px rgba(0, 114, 255, 0.4);
+            cursor: pointer;
+        }
+
+        /* ইন-অ্যাপ ব্রাউজার ফ্রেম (যেখানে লিংক খুলবে) */
+        #web-frame {
+            width: 100%;
+            height: 60vh;
+            border: none;
+            border-radius: 15px;
+            display: none;
+            background: #fff;
+        }
+
+        /* Keyframes */
+        @keyframes pulse3d {
+            0% { transform: scale(1) rotate(0deg); }
+            100% { transform: scale(1.08) rotate(3deg); }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ১. ৩ডি অ্যানিমেটেড স্প্ল্যাশ স্ক্রিন -->
+    <div id="splash-screen">
+        <div class="logo-3d-main">
+            <h1>TIK S</h1>
+        </div>
+        <div class="loader-ring"></div>
+    </div>
+
+    <!-- ২. মূল অ্যাপ কন্টেন্ট -->
+    <div id="main-content">
+        <h2 class="header-title">TIK S Video Downloader</h2>
+
+        <!-- ৩ডি আইকন সহ সোশ্যাল লিংক -->
+        <div class="social-buttons">
+            <!-- Facebook Button -->
+            <a href="javascript:void(0)" onclick="openInApp('https://facebook.com')" class="btn-3d btn-fb">
+                <b>f</b>
+            </a>
+            <!-- TikTok Button -->
+            <a href="javascript:void(0)" onclick="openInApp('https://tiktok.com')" class="btn-3d btn-tiktok">
+                <b>♪</b>
+            </a>
+        </div>
+
+        <!-- গ্যালারিতে ভিডিও ডাউনলোড করার বক্স -->
+        <div class="downloader-box">
+            <input type="text" id="videoUrl" placeholder="ভিডিওর লিংক পেস্ট করুন...">
+            <button class="download-btn" onclick="downloadVideo()">Download to Gallery</button>
+        </div>
+
+        <!-- ইন-অ্যাপ ফ্রেম (অ্যাপের ভেতরেই লিংক খোলার জন্য) -->
+        <iframe id="web-frame"></iframe>
+    </div>
+
+    <script>
+        // ৩ সেকেন্ড পর স্প্ল্যাশ স্ক্রিন হাইড হবে
+        setTimeout(() => {
+            document.getElementById('splash-screen').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('splash-screen').style.display = 'none';
+                document.getElementById('main-content').style.display = 'block';
+            }, 600);
+        }, 3000);
+
+        // অ্যাপের ভেতরে লিংক খোলার ফাংশন
+        function openInApp(url) {
+            const frame = document.getElementById('web-frame');
+            frame.src = url;
+            frame.style.display = 'block';
+        }
+
+        // গ্যালারিতে সরাসরি ফাইল নামানোর ডাউনলোড ফাংশন
+        function downloadVideo() {
+            const url = document.getElementById('videoUrl').value;
+            if(!url) {
+                alert('দয়া করে ভিডিও লিংক ইনপুট করুন!');
+                return;
+            }
+            
+            // ডিরেক্ট ডাউনলোড প্রসেস (যা গ্যালারি/ডাউনলোড ফোল্ডারে সেভ করবে)
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'TIKS_Video_' + Date.now() + '.mp4';
+            a.target = '_blank';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+    </script>
+</body>
+</html>
