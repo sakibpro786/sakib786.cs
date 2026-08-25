@@ -3,18 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TIK S</title>
+    <title>TIK S - Downloader</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body { background-color: #0e0d08; color: #fff; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
 
-        /* Top Header */
+        /* Header */
         .header { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
         .logo { font-size: 22px; font-weight: bold; background: linear-gradient(45deg, #ff0050, #00f2fe); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .settings-btn { font-size: 20px; cursor: pointer; color: #fff; }
 
-        /* Main Container */
+        /* Main Body */
         .container { flex: 1; padding: 20px; display: flex; flex-direction: column; justify-content: space-between; align-items: center; text-align: center; }
         .download-box { width: 100%; max-width: 400px; margin-top: 40px; }
         .input-group { display: flex; gap: 10px; background: #1a1914; padding: 8px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.1); }
@@ -22,34 +22,31 @@
         .input-group button { background: linear-gradient(45deg, #ff0050, #00f2fe); border: none; color: #fff; padding: 10px 20px; border-radius: 20px; font-weight: bold; cursor: pointer; }
 
         /* Bottom Logos */
-        .bottom-logos { display: flex; gap: 20px; margin-bottom: 20px; }
-        .bottom-logos img, .bottom-logos i { font-size: 30px; cursor: pointer; transition: transform 0.3s; }
+        .bottom-logos { display: flex; gap: 25px; margin-bottom: 25px; }
+        .bottom-logos i { font-size: 32px; cursor: pointer; transition: transform 0.2s; }
         .bottom-logos i.fa-tiktok { color: #ff0050; }
         .bottom-logos i.fa-facebook { color: #1877f2; }
-        .bottom-logos i:hover { transform: scale(1.2); }
 
         /* Popups Overlay */
-        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: none; justify-content: center; align-items: center; z-index: 1000; backdrop-filter: blur(5px); }
-        .popup { background: #181711; width: 85%; max-width: 350px; padding: 20px; border-radius: 20px; text-align: center; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 10px 30px rgba(0,0,0,0.5); position: relative; }
-        .popup h3 { margin-bottom: 15px; font-size: 18px; }
-        .close-btn { position: absolute; top: 10px; right: 15px; font-size: 18px; cursor: pointer; color: #888; }
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 1000; backdrop-filter: blur(6px); }
+        .popup { background: #181711; width: 85%; max-width: 350px; padding: 22px; border-radius: 20px; text-align: center; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 10px 30px rgba(0,0,0,0.8); position: relative; }
+        .close-btn { position: absolute; top: 12px; right: 16px; font-size: 20px; cursor: pointer; color: #888; }
 
-        /* Quality Buttons */
+        /* Buttons & Progress */
         .quality-btn { display: block; width: 100%; padding: 12px; margin: 10px 0; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); border-radius: 12px; color: #fff; font-weight: bold; cursor: pointer; }
         .quality-btn:hover { background: linear-gradient(45deg, #ff0050, #00f2fe); }
 
-        /* Light Progress Animation */
-        .progress-box { position: relative; width: 120px; height: 120px; margin: 0 auto; display: flex; justify-content: center; align-items: center; border-radius: 50%; background: radial-gradient(circle, rgba(0,242,254,0.2) 0%, transparent 70%); }
-        .glowing-circle { position: absolute; width: 100%; height: 100%; border-radius: 50%; border: 3px solid transparent; border-top-color: #00f2fe; border-right-color: #ff0050; animation: spin 1s linear infinite; box-shadow: 0 0 15px #00f2fe, 0 0 15px #ff0050; }
+        .progress-box { position: relative; width: 110px; height: 110px; margin: 15px auto; display: flex; justify-content: center; align-items: center; border-radius: 50%; }
+        .glowing-circle { position: absolute; width: 100%; height: 100%; border-radius: 50%; border: 3px solid transparent; border-top-color: #00f2fe; border-right-color: #ff0050; animation: spin 0.8s linear infinite; box-shadow: 0 0 15px #00f2fe, 0 0 15px #ff0050; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        .percent-text { font-size: 22px; font-weight: bold; color: #fff; text-shadow: 0 0 10px #00f2fe; }
+        .percent-text { font-size: 22px; font-weight: bold; color: #fff; }
 
-        /* Login & Profile UI */
-        .login-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 10px; margin: 8px 0; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; }
+        /* Login UI */
+        .login-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 12px; margin: 10px 0; border-radius: 12px; border: none; font-weight: bold; cursor: pointer; font-size: 14px; }
         .fb-btn { background: #1877f2; color: #fff; }
         .google-btn { background: #fff; color: #333; }
-        .profile-img { width: 60px; height: 60px; border-radius: 50%; border: 2px solid #00f2fe; margin-bottom: 10px; }
-        .tg-btn { background: #229ED9; color: #fff; display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; padding: 10px; border-radius: 10px; margin-top: 15px; font-weight: bold; }
+        .profile-img { width: 65px; height: 65px; border-radius: 50%; border: 2px solid #00f2fe; margin-bottom: 10px; object-fit: cover; }
+        .tg-btn { background: #229ED9; color: #fff; display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; padding: 12px; border-radius: 12px; margin-top: 15px; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -61,8 +58,7 @@
 
     <div class="container">
         <div class="download-box">
-            <h2>Paste Video Link</h2>
-            <br>
+            <h2 style="margin-bottom: 15px;">Paste Video Link</h2>
             <div class="input-group">
                 <input type="text" id="videoUrl" placeholder="TikTok or Facebook Link...">
                 <button onclick="startDownloadProcess()">Download</button>
@@ -89,7 +85,6 @@
     <div class="overlay" id="progressOverlay">
         <div class="popup">
             <h3>Downloading Video...</h3>
-            <br>
             <div class="progress-box">
                 <div class="glowing-circle"></div>
                 <div class="percent-text" id="percentText">1%</div>
@@ -102,14 +97,14 @@
         <div class="popup">
             <span class="close-btn" onclick="closePopup('settingsOverlay')">&times;</span>
             <div id="loggedOutView">
-                <h3>Account</h3>
-                <p style="color: #aaa; margin-bottom: 15px;">Please sign in to access all features.</p>
+                <h3>Account Settings</h3>
+                <p style="color: #aaa; margin: 10px 0 15px 0; font-size: 13px;">Please sign in to access full features.</p>
                 <button class="quality-btn" onclick="openLoginOptions()">Sign In</button>
             </div>
             <div id="loggedInView" style="display: none;">
-                <img id="userAvatar" class="profile-img" src="" alt="User">
-                <h3 id="userName">Sakib Islam</h3>
-                <p style="color:#888; font-size:12px;">App Version: 2.0 (Pro)</p>
+                <img id="userAvatar" class="profile-img" src="" alt="Profile">
+                <h3 id="userName">Md Sakib Islam</h3>
+                <p style="color:#888; font-size:12px; margin-top:4px;">Status: Active User</p>
                 <a href="https://t.me/sxviralhub786" target="_blank" class="tg-btn">
                     <i class="fa-brands fa-telegram"></i> Join Telegram Channel
                 </a>
@@ -121,7 +116,7 @@
     <div class="overlay" id="loginOptionsOverlay">
         <div class="popup">
             <span class="close-btn" onclick="closePopup('loginOptionsOverlay')">&times;</span>
-            <h3>Sign In Options</h3>
+            <h3 style="margin-bottom: 15px;">Sign In With</h3>
             <button class="login-btn fb-btn" onclick="confirmLogin('Facebook')"><i class="fa-brands fa-facebook"></i> Login to Facebook</button>
             <button class="login-btn google-btn" onclick="confirmLogin('Google')"><i class="fa-brands fa-google"></i> Login to Google</button>
         </div>
@@ -132,8 +127,8 @@
         <div class="popup">
             <span class="close-btn" onclick="closePopup('confirmOverlay')">&times;</span>
             <img id="confirmImg" class="profile-img" src="" alt="User">
-            <h3 id="confirmName"></h3>
-            <p style="margin: 10px 0; font-size: 14px; color: #ccc;">Are You sure To Login?</p>
+            <h3 id="confirmName">Md Sakib Islam</h3>
+            <p style="margin: 12px 0; font-size: 13px; color: #ccc;">Are You sure To Login?</p>
             <button class="quality-btn" onclick="proceedLogin()">Continue</button>
         </div>
     </div>
@@ -141,9 +136,9 @@
     <!-- Permission Popup -->
     <div class="overlay" id="permissionOverlay">
         <div class="popup">
-            <i class="fa-solid fa-folder-open" style="font-size:40px; color:#00f2fe; margin-bottom:10px;"></i>
-            <h3>App Permission Required</h3>
-            <p style="color:#aaa; font-size:13px; margin: 10px 0;">Please allow access to all files to save downloaded videos to gallery.</p>
+            <i class="fa-solid fa-folder-open" style="font-size:38px; color:#00f2fe; margin-bottom:10px;"></i>
+            <h3>Storage Access</h3>
+            <p style="color:#aaa; font-size:12px; margin: 10px 0;">Please allow access to save videos directly into your Gallery.</p>
             <button class="quality-btn" onclick="grantPermission()">Allow Access</button>
         </div>
     </div>
@@ -156,26 +151,33 @@
         function closePopup(id) { document.getElementById(id).style.display = 'none'; }
 
         function startDownloadProcess() {
-            let input = document.getElementById('videoUrl').value;
-            if(!input) { alert('Please paste a link first!'); return; }
+            let input = document.getElementById('videoUrl').value.trim();
+            if(!input) { alert('Paste a valid TikTok or FB video link first!'); return; }
             document.getElementById('qualityOverlay').style.display = 'flex';
         }
 
         function triggerDownload(quality) {
             closePopup('qualityOverlay');
+            let videoLink = document.getElementById('videoUrl').value.trim();
             document.getElementById('progressOverlay').style.display = 'flex';
+            
             let percent = 1;
             let interval = setInterval(() => {
-                percent++;
+                percent += 2;
+                if(percent > 100) percent = 100;
                 document.getElementById('percentText').innerText = percent + '%';
-                if(percent >= 100) {
+
+                if (percent >= 100) {
                     clearInterval(interval);
                     setTimeout(() => {
                         closePopup('progressOverlay');
-                        alert('Video Downloaded Successfully to Gallery!');
-                    }, 300);
+                        
+                        // Download Trigger via Proxy API
+                        let downloadApi = "https://api.tiklydown.eu.org/api/download?url=" + encodeURIComponent(videoLink);
+                        window.location.href = downloadApi; 
+                    }, 400);
                 }
-            }, 40); // 4 seconds total
+            }, 80); // 4 Seconds Animation
         }
 
         function openSettings() { document.getElementById('settingsOverlay').style.display = 'flex'; }
@@ -186,10 +188,10 @@
             closePopup('loginOptionsOverlay');
             if(provider === 'Facebook') {
                 document.getElementById('confirmName').innerText = "Md Sakib Islam";
-                document.getElementById('confirmImg').src = "https://via.placeholder.com/60/1877f2/ffffff?text=FB";
+                document.getElementById('confirmImg').src = "https://graph.facebook.com/4/picture?type=large";
             } else {
-                document.getElementById('confirmName').innerText = "sakib786@gmail.com";
-                document.getElementById('confirmImg').src = "https://via.placeholder.com/60/ea4335/ffffff?text=G";
+                document.getElementById('confirmName').innerText = "Sakib Islam (Google)";
+                document.getElementById('confirmImg').src = "https://lh3.googleusercontent.com/a/default-user";
             }
             document.getElementById('confirmOverlay').style.display = 'flex';
         }
@@ -204,12 +206,13 @@
             isLoggedIn = true;
             document.getElementById('loggedOutView').style.display = 'none';
             document.getElementById('loggedInView').style.display = 'block';
+            
             if(selectedProvider === 'Facebook') {
                 document.getElementById('userName').innerText = "Md Sakib Islam";
-                document.getElementById('userAvatar').src = "https://via.placeholder.com/60/1877f2/ffffff?text=FB";
+                document.getElementById('userAvatar').src = "https://graph.facebook.com/4/picture?type=large";
             } else {
-                document.getElementById('userName').innerText = "Sakib (Google)";
-                document.getElementById('userAvatar').src = "https://via.placeholder.com/60/ea4335/ffffff?text=G";
+                document.getElementById('userName').innerText = "Sakib Islam";
+                document.getElementById('userAvatar').src = "https://lh3.googleusercontent.com/a/default-user";
             }
             alert('Login Successful!');
         }
