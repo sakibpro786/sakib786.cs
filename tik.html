@@ -142,28 +142,36 @@
             let input = document.getElementById('videoUrl').value.trim();
             if(!input) { alert('Paste a valid TikTok or FB video link first!'); return; }
             document.getElementById('qualityOverlay').style.display = 'flex';
-        }
-
         function triggerDownload(quality) {
-            closePopup('qualityOverlay');
-            document.getElementById('progressOverlay').style.display = 'flex';
-            
-            let percent = 1;
-            let interval = setInterval(() => {
-                percent += 3;
-                if(percent > 100) percent = 100;
-                document.getElementById('percentText').innerText = percent + '%';
+    closePopup('qualityOverlay');
+    let videoLink = document.getElementById('videoUrl').value.trim();
+    
+    if(!videoLink) {
+        alert('ভিডিও লিংক দিন!');
+        return;
+    }
 
-                if (percent >= 100) {
-                    clearInterval(interval);
-                    setTimeout(() => {
-                        closePopup('progressOverlay');
-                        alert('Video Downloaded Successfully!');
-                    }, 400);
-                }
-            }, 100); // Smooth 4 second progress
+    document.getElementById('progressOverlay').style.display = 'flex';
+    let percent = 1;
+
+    let interval = setInterval(() => {
+        percent += 3;
+        if(percent > 100) percent = 100;
+        document.getElementById('percentText').innerText = percent + '%';
+
+        if (percent >= 100) {
+            clearInterval(interval);
+            setTimeout(() => {
+                closePopup('progressOverlay');
+                
+                // আসল ফাইল সেভ/ডাউনলোডের ট্রাইগার
+                let downloadUrl = "https://www.tikwm.com/api/?url=" + encodeURIComponent(videoLink) + "&count=12&cursor=0&web=1&hd=1";
+                window.open(downloadUrl, '_blank');
+            }, 400);
         }
-
+    }, 100);
+                            }
+            
         function openSettings() { document.getElementById('settingsOverlay').style.display = 'flex'; }
         function openLoginOptions() { closePopup('settingsOverlay'); document.getElementById('loginOptionsOverlay').style.display = 'flex'; }
 
